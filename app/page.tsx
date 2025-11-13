@@ -28,6 +28,7 @@ export default function Home() {
     // <div className="w-[1000px]">
     <div>
       <TeamGrid title="Website" images={imageData} backgroundImage="backgrounds/tech-bg.png" />
+      // <TeamGrid title="Website" images={imageData} backgroundImage="backgrounds/tech-bg.png" />
     // </div>
   )
 }

@@ -1,26 +1,8 @@
 // constants/galleryImages.ts
 
-export type GalleryImageSize = "small" | "medium" | "large";
-
-export interface GalleryImages {
-  id: string;
-  src: string;
-  alt: string;
-  size: GalleryImageSize;
-}
+import { GalleryImages } from "../interface/galleryImagesInterface";
 
 export const galleryImages: GalleryImages[] = [
-  // { id: "1", src: "/hackathon-students-coding-laptops.jpg", alt: "Students coding on laptops", size: "small" },
-  // { id: "2", src: "/team-collaboration-whiteboard.jpg", alt: "Team collaboration on whiteboard", size: "medium" },
-  // { id: "3", src: "/project-presentation-showcase.jpg", alt: "Project presentation showcase", size: "large" },
-  // { id: "4", src: "/coffee-and-coding-session.jpg", alt: "Coffee and coding session", size: "small" },
-  // { id: "5", src: "/hackathon-sticker-wall.jpg", alt: "Hackathon sticker wall", size: "small" },
-  // { id: "6", src: "/team-wins-award-ceremony.jpg", alt: "Team wins award ceremony", size: "medium" },
-  // { id: "7", src: "/networking-mentors-students.jpg", alt: "Networking with mentors", size: "small" },
-  // { id: "8", src: "/final-demo-night-presentation.jpg", alt: "Final demo night presentation", size: "large" },
-
-  // --- 20 UNSPLASH IMAGES BELOW ---
-
   {
     id: "9",
     src: "https://images.unsplash.com/photo-1522071820081-009f0129c71c",

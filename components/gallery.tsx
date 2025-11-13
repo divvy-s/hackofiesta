@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { galleryImages, GalleryImages } from "@/constants/galleryImages";
+import { galleryImages } from "@/constants/galleryImages";
+import { GalleryImages } from "@/interface/galleryImagesInterface";
 
 import HackathonGallery from "./ui/parallax-scroll";
 
