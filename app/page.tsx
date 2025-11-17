@@ -9,6 +9,7 @@ import SplashScreen from "@/components/splash-screen";
 import AboutNSponsor from "@/components/AboutNSponsor";
 
 
+import HeroParallax from "@/components/hero-parallax";
 
 export default function Home() {
 
@@ -17,6 +18,14 @@ export default function Home() {
         <Header />
         <SplashScreen />
         <AboutNSponsor/>
+        {/* <SplashScreen /> */}
+        <HeroParallax
+          backImage="/assets/hero/layer-front.jpeg"
+          topImage="/assets/hero/layer-back.png"
+          topScale={1.2}
+          topMaxHeight={520}
+          // height={}
+         />
         <main className="min-h-screen w-full bg-black font-sans">
         <div className="min-h-screen flex flex-col gap-50 pt-25 pb-25 items-center justify-center">
             <TeamsSection />
@@ -29,6 +38,10 @@ export default function Home() {
                 />
             ))}
         </div>
+            
+        //adding this dummy div to allow scrolling to see the last team's content properly later here we can add footer or other components
+        <div style={{ height: "120vh" }} />
+
         </main>
         
 
