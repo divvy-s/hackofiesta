@@ -15,8 +15,8 @@ const AboutUs = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 50);
-    return () => clearTimeout(timer);
+    const t = setTimeout(() => setIsVisible(true), 50);
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {
@@ -24,78 +24,73 @@ const AboutUs = () => {
     const bg = bgRef.current;
     const title = titleRef.current;
     const content = contentRef.current;
-
     if (!section || !bg || !title || !content) return;
 
-    gsap.set(bg, {
-      scale: 0.25,
-      scaleY: 0.35,
-      transformOrigin: "center center",
-    });
-    gsap.set(title, { opacity: 0, x: -300 });
-    gsap.set(content, { opacity: 0, x: 300 });
+    gsap.set(bg, { clipPath: "inset(0 35% 0 35%)" });
+    gsap.set(title, { opacity: 0, x: -200 });
+    gsap.set(content, { opacity: 0, x: 200 });
 
-    const tl = gsap.timeline({
+    const reveal = { side: 35 };
+
+    gsap.to(reveal, {
+      side: 0,
       scrollTrigger: {
         trigger: section,
         start: "top 50%",
         end: "bottom -50%",
         scrub: 1,
       },
+      ease: "power3.out",
+      onUpdate: () => {
+        const v = reveal.side + "%";
+        bg.style.clipPath = `inset(0 ${v} 0 ${v})`;
+      },
     });
 
-    tl.to(bg, {
-      scale: 1.4,
-      scaleY: 1,
-      duration: 2,
-      ease: "power3.out",
-    }, 0.5)
-      .to(title, {
-        x: 0,
-        opacity: 1,
-        duration: 1.3,
-        ease: "expo.out",
-      }, 0.1)
-      .to(content, {
-        x: 0,
-        opacity: 1,
-        duration: 1.3,
-        ease: "expo.out",
-      }, 0.2);
+    gsap.to([title, content], {
+      x: 0,
+      opacity: 1,
+      duration: 1.2,
+      ease: "expo.out",
+      scrollTrigger: {
+        trigger: section,
+        start: "top 60%",
+        end: "bottom -40%",
+        scrub: 1,
+      },
+    });
 
-    // Fade out about content when scrolling past
     gsap.to([title, content], {
       scrollTrigger: {
         trigger: section,
-        start: "bottom 60%",
-        end: "bottom 20%",
-        scrub: 1,
+        start: "bottom 95%",
+        end: "bottom -40%",
+        scrub: 2,
       },
       opacity: 0,
-      y: -50,
-      duration: 1,
+      y: -20,
+      duration: 2,
+      ease: "power1.out",
     });
 
-    // Keep background fixed and control its lifecycle
-    const pinTrigger = ScrollTrigger.create({
+    ScrollTrigger.create({
       trigger: section,
       start: "bottom bottom",
       endTrigger: ".sponsors-section",
-      end: "bottom+=100vh bottom",
+      end: "bottom+=150vh bottom",
       pin: bg,
       pinSpacing: false,
     });
 
-    // Fade out background at the end of sponsors section
     gsap.to(bg, {
       scrollTrigger: {
-        trigger: ".sponsors-section",
-        start: "bottom bottom",
-        end: "bottom+=100vh bottom",
-        scrub: 2,
+        trigger: ".sponsors-end-marker",
+        start: "top bottom",
+        end: "+=200vh",
+        scrub: 3,
       },
       opacity: 0,
-      ease: "power2.inOut",
+      ease: "power1.inOut",
     });
 
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
@@ -105,8 +100,9 @@ const AboutUs = () => {
     <section
       ref={sectionRef}
       id="about"
-      className={`relative min-h-screen w-full overflow-hidden 
-        ${isVisible ? "animate-[fadeInSmooth_1s_ease-out]" : "opacity-0"}`}
+      className={`relative min-h-screen w-full overflow-hidden ${
+        isVisible ? "animate-[fadeInSmooth_1s_ease-out]" : "opacity-0"
+      }`}
     >
       <div
         ref={bgRef}
@@ -121,7 +117,7 @@ const AboutUs = () => {
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
-      <div className="relative z-10 h-full min-h-screen flex flex-col justify-between p-8 md:p-12 lg:p-16">
+      <div className="relative z-10 h-full min-h-screen flex flex-col justify-center gap-20 p-8 md:p-12 lg:p-16">
         <h1
           ref={titleRef}
           className={`text-6xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight max-w-2xl ${
@@ -197,7 +193,6 @@ const sponsors: Sponsor[] = Array.from({ length: 17 }, (_, i) => {
   };
 });
 
-
 const SponsorsGrid = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -207,7 +202,6 @@ const SponsorsGrid = () => {
     const section = sectionRef.current;
     const title = titleRef.current;
     const grid = gridRef.current;
-
     if (!section || !title || !grid) return;
 
     const cards = grid.querySelectorAll(".sponsor-card");
@@ -229,15 +223,18 @@ const SponsorsGrid = () => {
       y: 0,
       duration: 0.8,
       ease: "power3.out",
-    })
-      .to(cards, {
+    }).to(
+      cards,
+      {
         opacity: 1,
         y: 0,
         scale: 1,
         duration: 0.6,
         stagger: 0.05,
         ease: "power2.out",
-      }, "-=0.4");
+      },
+      "-=0.4"
+    );
 
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, []);
@@ -249,50 +246,33 @@ const SponsorsGrid = () => {
   const lastRow = sponsors.slice(fullRowsCount * columns);
 
   return (
-    <div
-      ref={sectionRef}
-      className="sponsors-section min-h-screen py-16 px-4 relative"
-      style={{
-        background: "transparent",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        backgroundAttachment: "fixed",
-      }}
-    >
-      <div className="absolute inset-0" />
-      
-      <div className="max-w-7xl mx-auto relative z-10">
-        <h1
-          ref={titleRef}
-          className="text-5xl md:text-6xl font-bold text-white text-center mb-16"
-        >
-          Sponsors
-        </h1>
+    <>
+      <div
+        ref={sectionRef}
+        className="sponsors-section min-h-screen py-16 px-4 relative"
+        style={{
+          background: "transparent",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
+        }}
+      >
+        <div className="absolute inset-0" />
 
-        <div ref={gridRef}>
-          {/* FULL ROWS */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {fullRows.map((sponsor, index) => (
-              <div
-                key={index}
-                className="sponsor-card bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-8 flex items-center justify-center hover:bg-slate-700/50 hover:border-slate-600 transition-all duration-300 hover:scale-105"
-              >
-                <img
-                  src={sponsor.logo}
-                  alt={sponsor.name}
-                  className="max-w-full h-auto object-contain"
-                />
-              </div>
-            ))}
-          </div>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <h1
+            ref={titleRef}
+            className="text-5xl md:text-6xl font-bold text-white text-center mb-16"
+          >
+            Sponsors
+          </h1>
 
-          {/* LAST ROW — CENTERED */}
-          {itemsInLastRow > 0 && (
-            <div className="flex justify-center gap-6 mt-6">
-              {lastRow.map((sponsor, index) => (
+          <div ref={gridRef}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {fullRows.map((sponsor, index) => (
                 <div
-                  key={`last-${index}`}
+                  key={index}
                   className="sponsor-card bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-8 flex items-center justify-center hover:bg-slate-700/50 hover:border-slate-600 transition-all duration-300 hover:scale-105"
                 >
                   <img
@@ -303,10 +283,29 @@ const SponsorsGrid = () => {
                 </div>
               ))}
             </div>
-          )}
+
+            {itemsInLastRow > 0 && (
+              <div className="flex justify-center gap-6 mt-6">
+                {lastRow.map((sponsor, index) => (
+                  <div
+                    key={`last-${index}`}
+                    className="sponsor-card bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-8 flex items-center justify-center hover:bg-slate-700/50 hover:border-slate-600 transition-all duration-300 hover:scale-105"
+                  >
+                    <img
+                      src={sponsor.logo}
+                      alt={sponsor.name}
+                      className="max-w-full h-auto object-contain"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+
+      <div className="sponsors-end-marker h-[1px]" />
+    </>
   );
 };
 
