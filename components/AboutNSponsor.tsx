@@ -61,11 +61,24 @@ const AboutUs = () => {
     });
 
     gsap.to([title, content], {
+      x: 0,
+      opacity: 1,
+      duration: 1.2,
+      ease: "expo.out",
       scrollTrigger: {
         trigger: section,
         start: "bottom 80%",
         end: "bottom 20%",
         scrub: 1,
+      },
+    });
+
+    gsap.to([title, content], {
+      scrollTrigger: {
+        trigger: section,
+        start: "bottom 95%",
+        end: "bottom -40%",
+        scrub: 2,
       },
       opacity: 0,
       y: -50,
@@ -118,7 +131,7 @@ const AboutUs = () => {
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
-      <div className="relative z-10 h-full min-h-screen flex flex-col justify-between p-8 md:p-12 lg:p-16">
+      <div className="relative z-10 h-full min-h-screen flex flex-col justify-center gap-20 p-8 md:p-12 lg:p-16">
         <h1
           ref={titleRef}
           className={`text-6xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight max-w-2xl ${
