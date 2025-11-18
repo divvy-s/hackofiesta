@@ -29,6 +29,10 @@ export default function Home() {
                 />
             ))}
         </div>
+            
+        //adding this dummy div to allow scrolling to see the last team's content properly later here we can add footer or other components
+        <div style={{ height: "120vh" }} />
+
         </main>
         
 

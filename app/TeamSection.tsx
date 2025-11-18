@@ -39,22 +39,29 @@ export default function TeamsSection() {
       item.addEventListener("mouseenter", () => {
         gsap.to(item, {
           scale: 1.1,
-          filter: "brightness(1.7)",
+          filter: "brightness(2.1)",
           duration: 0.4,
           ease: "power3.out",
         });
-        gsap.to(".team-item:not(:hover)", {
+        
+        items.forEach((other) => {
+      if (other !== item) {
+        gsap.to(other, {
           scale: 0.93,
-          filter: "brightness(1.2)",
+          filter: "brightness(0.5)",
+          opacity: 0.5,
           duration: 0.4,
           ease: "power3.out",
         });
-      });
+      }
+    });
+  });
 
       item.addEventListener("mouseleave", () => {
         gsap.to(items, {
           scale: 1,
-          filter: "brightness(1.3)",
+          filter: "brightness(1.6)",
+          opacity: 1,
           duration: 0.4,
           ease: "power3.out",
         });
@@ -78,7 +85,7 @@ export default function TeamsSection() {
       <div
         ref={containerRef}
         className="flex flex-wrap md:flex-nowrap justify-center items-end gap-5 sm:gap-6 md:gap-8 
-                   px-4 sm:px-6 md:px-8 overflow-x-auto md:overflow-x-hidden 
+                   px-4 sm:px-6 md:px-8 md:overflow-x-hidden 
                    scroll-smooth no-scrollbar w-full max-w-[95vw] pb-10"
       >
         {teams.map((team, index) => (
@@ -88,8 +95,7 @@ export default function TeamsSection() {
               w-[110px] sm:w-[130px] md:w-[150px] 
               h-[300px] sm:h-[380px] md:h-[460px] 
               cursor-pointer overflow-hidden group 
-              shadow-[0_0_25px_rgba(255,100,0,0.55)] 
-              transition-all duration-300 shrink-0 bg-black"
+              transition-all duration-300 shrink-0 bg-black brightness-125"
             onClick={() => handleClick(team.id)}   
           >
             <img
