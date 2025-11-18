@@ -63,34 +63,35 @@ const AboutUs = () => {
     gsap.to([title, content], {
       scrollTrigger: {
         trigger: section,
-        start: "bottom 95%",
-        end: "bottom -40%",
-        scrub: 2,
+        start: "bottom 80%",
+        end: "bottom 20%",
+        scrub: 1,
       },
       opacity: 0,
-      y: -20,
-      duration: 2,
-      ease: "power1.out",
+      y: -50,
+      duration: 1,
+      ease: "power2.out",
     });
 
     ScrollTrigger.create({
       trigger: section,
       start: "bottom bottom",
       endTrigger: ".sponsors-section",
-      end: "bottom+=150vh bottom",
+      end: "bottom bottom",
       pin: bg,
       pinSpacing: false,
     });
 
     gsap.to(bg, {
       scrollTrigger: {
-        trigger: ".sponsors-end-marker",
+        trigger: ".sponsors-section",
         start: "top bottom",
-        end: "+=200vh",
-        scrub: 3,
+        end: "bottom top",
+        scrub: 2,
       },
       opacity: 0,
-      ease: "power1.inOut",
+      scale: 1.05,
+      ease: "none",
     });
 
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
@@ -117,7 +118,7 @@ const AboutUs = () => {
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
-      <div className="relative z-10 h-full min-h-screen flex flex-col justify-center gap-20 p-8 md:p-12 lg:p-16">
+      <div className="relative z-10 h-full min-h-screen flex flex-col justify-between p-8 md:p-12 lg:p-16">
         <h1
           ref={titleRef}
           className={`text-6xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight max-w-2xl ${
@@ -301,6 +302,7 @@ const SponsorsGrid = () => {
               </div>
             )}
           </div>
+          <div style={{ height: "20vh" }} />
         </div>
       </div>
 
